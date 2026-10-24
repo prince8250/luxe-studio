@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- In progress. The project scaffold and required setup files are in place, but the build is blocked by a required Next.js security upgrade.
+- In progress. The theme and layout shell is implemented, while the production build remains blocked by a required Next.js security upgrade.
 
 ## Current Goal
 
-- Complete `00-project-setup.md` and keep the project in a clean, buildable state.
+- Complete `00-project-setup.md` and keep the project in a clean, buildable state, then continue with the next foundation spec.
 
 ## Completed
 
@@ -16,6 +16,7 @@ Update this file whenever the current phase, active feature, or implementation s
 - Required dependencies for Supabase, Zod, Lucide, and shadcn-compatible UI were added.
 - `lib/env.ts` validates required env vars and `.env.example` lists the required variable names.
 - Required folders for `lib`, public/admin/booking components, and `supabase/migrations` were created.
+- `01-theme-and-layout.md` is implemented: design tokens, Noto Serif/Open Sans/Oswald fonts, brand wrappers, scroll reveal, metadata, and the temporary `/design-check` page are in place.
 
 ## In Progress
 
@@ -31,7 +32,7 @@ Specs live in `context/feature-specs/`. Build in order unless the developer says
 
 **Phase 0: Foundation**
 - [ ] 00 Project setup
-- [ ] 01 Theme and layout shell
+- [x] 01 Theme and layout shell
 - [ ] 02 Database schema, RLS, and seed data
 
 **Phase 1: Public site**
