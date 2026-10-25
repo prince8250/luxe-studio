@@ -25,6 +25,16 @@ function NavbarLink({ id, label, onNavigate }: NavbarLinkProps) {
   const href = `/#${id}`;
 
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
     const target = document.getElementById(id);
 
     if (window.location.pathname === "/" && target) {
@@ -57,6 +67,19 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 768px)");
+
+    function closeMenuOnDesktop() {
+      if (desktopQuery.matches) {
+        setIsMenuOpen(false);
+      }
+    }
+
+    desktopQuery.addEventListener("change", closeMenuOnDesktop);
+    return () => desktopQuery.removeEventListener("change", closeMenuOnDesktop);
+  }, []);
 
   useEffect(() => {
     function updateScrollState() {

@@ -117,6 +117,7 @@ Resolve these before the spec that needs them (shown in brackets). Record answer
 
 ## Session Notes
 
+- Fixed navbar review findings: the mobile overlay scrolls vertically when needed, modified/non-primary section clicks retain normal navigation, and entering the desktop breakpoint closes the menu and releases the body scroll lock. Lint, typecheck, build (on retry after the existing security reminder), and Chromium checks at mobile, short-viewport, breakpoint, and desktop sizes passed.
 - Merged the overlapping fixes with the remote corrections. Lint, typecheck, build (on retry), 398 type assertions, browser bundle checks, and PostgreSQL seed replay checks passed on the merged code; earlier identifier/overlap/RLS checks remain valid because the migration is unchanged. Hosted Supabase verification remains pending.
 - Applied the current issue corrections: aligned the generated UI component rule, corrected the migration filename, tightened database write types, made browser env references statically analyzable, fixed the migration search path, made offer and gallery seeds idempotent, and removed the scratch issue list.
 - Fixed the mobile navbar menu interaction by ensuring the hamburger trigger and opened navigation sheet have explicit touch handling and stacking order; verified the menu opens at 375px.
