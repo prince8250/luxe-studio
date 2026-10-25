@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Serif, Open_Sans, Oswald } from "next/font/google";
+import { Navbar } from "@/components/public/navbar";
 import "./globals.css";
 
 const notoSerif = Noto_Serif({
@@ -40,7 +41,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${notoSerif.variable} ${openSans.variable} ${oswald.variable} h-full antialiased`}
     >
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

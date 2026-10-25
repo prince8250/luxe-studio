@@ -17,6 +17,7 @@ Update this file whenever the current phase, active feature, or implementation s
 - `lib/env.ts` validates required env vars and `.env.example` lists the required variable names.
 - Required folders for `lib`, public/admin/booking components, and `supabase/migrations` were created.
 - `01-theme-and-layout.md` is implemented: design tokens, Noto Serif/Open Sans/Oswald fonts, brand wrappers, scroll reveal, metadata, and the temporary `/design-check` page are in place.
+- `03-navbar.md` is implemented: responsive fixed navigation, desktop floating bar, mobile menu sheet, active-section observer, reduced-motion scrolling, keyboard focus trap, Escape/backdrop close behavior, and always-visible Book links.
 - `02-database-schema.md` is implemented in code: the initial Supabase migration defines all required tables, enums, booking overlap protection, booking identifiers, RLS policies, and `gallery`, `staff`, and `catalog` storage buckets.
 - Sample catalog data is provided in `supabase/seed.sql`; it is explicitly labeled as sample data.
 - Typed Supabase browser, server, and server-only service-role helpers were added, along with `lib/database.types.ts`.
@@ -41,7 +42,7 @@ Specs live in `context/feature-specs/`. Build in order unless the developer says
 - [ ] 02 Database schema, RLS, and seed data (implementation complete; Supabase verification pending)
 
 **Phase 1: Public site**
-- [ ] 03 Navbar
+- [x] 03 Navbar
 - [ ] 04 Hero
 - [ ] 05 Service categories and services page
 - [ ] 06 Gallery mosaic and page
@@ -116,6 +117,9 @@ Resolve these before the spec that needs them (shown in brackets). Record answer
 
 ## Session Notes
 
+- Fixed the mobile navbar menu interaction by ensuring the hamburger trigger and opened navigation sheet have explicit touch handling and stacking order; verified the menu opens at 375px.
 - Supabase project creation and keys are still required; do not guess them. In Supabase Auth, disable public sign-ups before launch.
 - The migration includes a `catalog` public bucket in addition to the `gallery` and `staff` buckets required by the schema spec.
 - The migration uses `btree_gist` and `pgcrypto`; active booking overlap is enforced by a partial exclusion constraint on `[starts_at, ends_at)`.
+- Navbar section targets `#services`, `#gallery`, `#about`, and `#contact` are not present on the temporary home page yet; the links are wired to those real IDs for later public-site sections.
+- The mobile `Call` link currently points to `/#contact` because the studio phone number is still an open question.
