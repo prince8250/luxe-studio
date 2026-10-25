@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- In progress. The theme and layout shell is implemented, while the production build remains blocked by a required Next.js security upgrade.
+- In progress. The theme and layout shell and the Supabase schema foundation are implemented; production setup still needs a Supabase project and the required Next.js security upgrade.
 
 ## Current Goal
 
-- Complete `00-project-setup.md` and keep the project in a clean, buildable state, then continue with the next foundation spec.
+- Create the Supabase project, apply the migration and sample seed, verify RLS and booking overlap behavior, then complete the remaining foundation setup checks.
 
 ## Completed
 
@@ -17,13 +17,19 @@ Update this file whenever the current phase, active feature, or implementation s
 - `lib/env.ts` validates required env vars and `.env.example` lists the required variable names.
 - Required folders for `lib`, public/admin/booking components, and `supabase/migrations` were created.
 - `01-theme-and-layout.md` is implemented: design tokens, Noto Serif/Open Sans/Oswald fonts, brand wrappers, scroll reveal, metadata, and the temporary `/design-check` page are in place.
+- `03-navbar.md` is implemented: responsive fixed navigation, desktop floating bar, mobile menu sheet, active-section observer, reduced-motion scrolling, keyboard focus trap, Escape/backdrop close behavior, and always-visible Book links.
+- `02-database-schema.md` is implemented in code: the initial Supabase migration defines all required tables, enums, booking overlap protection, booking identifiers, RLS policies, and `gallery`, `staff`, and `catalog` storage buckets.
+- Sample catalog data is provided in `supabase/seed.sql`; it is explicitly labeled as sample data.
+- Typed Supabase browser, server, and server-only service-role helpers were added, along with `lib/database.types.ts`.
 
 ## In Progress
 
-- `00-project-setup.md` is blocked on the required Next.js security upgrade because the current app version is flagged by the framework itself.
+- `02-database-schema.md` cannot be fully verified until the developer creates the Supabase project, supplies local environment keys, applies the migration, and runs the overlap/RLS checks.
+- `00-project-setup.md` remains blocked on the required Next.js security upgrade because the current app version is flagged by the framework itself.
 
 ## Next Up
 
+- Create the Supabase project with public sign-ups disabled, apply `supabase/migrations/20261025160022_initial_schema.sql`, run `supabase/seed.sql`, and verify overlap and anon RLS behavior.
 - Decide whether to run the security upgrade in-place or in a separate Git worktree, then rerun `npm run lint`, `npm run typecheck`, and `npm run build`.
 
 ## Build Order
@@ -33,10 +39,10 @@ Specs live in `context/feature-specs/`. Build in order unless the developer says
 **Phase 0: Foundation**
 - [ ] 00 Project setup
 - [x] 01 Theme and layout shell
-- [ ] 02 Database schema, RLS, and seed data
+- [ ] 02 Database schema, RLS, and seed data (implementation complete; Supabase verification pending)
 
 **Phase 1: Public site**
-- [ ] 03 Navbar
+- [x] 03 Navbar
 - [ ] 04 Hero
 - [ ] 05 Service categories and services page
 - [ ] 06 Gallery mosaic and page
@@ -111,4 +117,12 @@ Resolve these before the spec that needs them (shown in brackets). Record answer
 
 ## Session Notes
 
-- Add context needed to resume work in the next session.
+- Fixed navbar review findings: the mobile overlay scrolls vertically when needed, modified/non-primary section clicks retain normal navigation, and entering the desktop breakpoint closes the menu and releases the body scroll lock. Lint, typecheck, build (on retry after the existing security reminder), and Chromium checks at mobile, short-viewport, breakpoint, and desktop sizes passed.
+- Merged the overlapping fixes with the remote corrections. Lint, typecheck, build (on retry), 398 type assertions, browser bundle checks, and PostgreSQL seed replay checks passed on the merged code; earlier identifier/overlap/RLS checks remain valid because the migration is unchanged. Hosted Supabase verification remains pending.
+- Applied the current issue corrections: aligned the generated UI component rule, corrected the migration filename, tightened database write types, made browser env references statically analyzable, fixed the migration search path, made offer and gallery seeds idempotent, and removed the scratch issue list.
+- Fixed the mobile navbar menu interaction by ensuring the hamburger trigger and opened navigation sheet have explicit touch handling and stacking order; verified the menu opens at 375px.
+- Supabase project creation and keys are still required; do not guess them. In Supabase Auth, disable public sign-ups before launch.
+- The migration includes a `catalog` public bucket in addition to the `gallery` and `staff` buckets required by the schema spec.
+- The migration uses `btree_gist` and `pgcrypto`; active booking overlap is enforced by a partial exclusion constraint on `[starts_at, ends_at)`.
+- Navbar section targets `#services`, `#gallery`, `#about`, and `#contact` are not present on the temporary home page yet; the links are wired to those real IDs for later public-site sections.
+- The mobile `Call` link currently points to `/#contact` because the studio phone number is still an open question.

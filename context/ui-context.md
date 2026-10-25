@@ -85,7 +85,7 @@ Load with `next/font/google` and expose as CSS variables. Nav links: Open Sans b
 - **Outline**: transparent fill, 1px white border, white Oswald uppercase text. Hover: fills white with black text.
 - **Primary booking button** is the solid style, always the most visible element in its area.
 - Pressed state: slight shift down, never a bounce.
-- These are app-level wrapper components in `components/brand/`. Do not edit `components/ui/` shadcn files.
+- These are app-level wrapper components in `components/brand/`. Never edit `components/ui/` shadcn files.
 
 ## Motion And Animation
 
