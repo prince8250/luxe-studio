@@ -29,7 +29,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Create the Supabase project with public sign-ups disabled, apply `supabase/migrations/20261024220000_initial_schema.sql`, run `supabase/seed.sql`, and verify overlap and anon RLS behavior.
+- Create the Supabase project with public sign-ups disabled, apply `supabase/migrations/20261025160022_initial_schema.sql`, run `supabase/seed.sql`, and verify overlap and anon RLS behavior.
 - Decide whether to run the security upgrade in-place or in a separate Git worktree, then rerun `npm run lint`, `npm run typecheck`, and `npm run build`.
 
 ## Build Order
@@ -117,7 +117,8 @@ Resolve these before the spec that needs them (shown in brackets). Record answer
 
 ## Session Notes
 
-- Addressed schema foundation review findings: table write types require mandatory insert fields and reject unknown fields, browser Supabase env references support Next.js inlining, booking identifier generation resolves `pgcrypto` in `extensions`, and offer/gallery seeds can be rerun without duplicates. Local lint, typecheck, build (on retry), browser bundle checks, and PostgreSQL seed/identifier/overlap/RLS checks passed; hosted Supabase verification remains pending.
+- Merged the overlapping fixes with the remote corrections. Lint, typecheck, build (on retry), 398 type assertions, browser bundle checks, and PostgreSQL seed replay checks passed on the merged code; earlier identifier/overlap/RLS checks remain valid because the migration is unchanged. Hosted Supabase verification remains pending.
+- Applied the current issue corrections: aligned the generated UI component rule, corrected the migration filename, tightened database write types, made browser env references statically analyzable, fixed the migration search path, made offer and gallery seeds idempotent, and removed the scratch issue list.
 - Fixed the mobile navbar menu interaction by ensuring the hamburger trigger and opened navigation sheet have explicit touch handling and stacking order; verified the menu opens at 375px.
 - Supabase project creation and keys are still required; do not guess them. In Supabase Auth, disable public sign-ups before launch.
 - The migration includes a `catalog` public bucket in addition to the `gallery` and `staff` buckets required by the schema spec.

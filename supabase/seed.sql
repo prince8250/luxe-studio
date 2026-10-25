@@ -48,13 +48,13 @@ where not exists (
 );
 
 insert into public.offers (title, description, image_path, starts_on, ends_on)
-select v.title, v.description, v.image_path, v.starts_on, v.ends_on
+select title, description, image_path, starts_on, ends_on
 from (values
   ('First Visit', '10% off your first studio visit.', 'catalog/first-visit.jpg', current_date, current_date + 90),
   ('Midweek Reset', 'A considered midweek beauty reset.', 'catalog/midweek-reset.jpg', current_date, current_date + 60)
 ) as v(title, description, image_path, starts_on, ends_on)
 where not exists (
-  select 1 from public.offers o where o.title = v.title
+  select 1 from public.offers existing where existing.title = v.title
 );
 
 insert into public.gallery_images (path, caption, sort_order)

@@ -66,7 +66,7 @@ Always ask before:
 
 ## Never
 
-- Never edit generated shadcn/ui components in `components/ui/` or third-party library internals. Compose them in app-level components instead.
+- Never edit generated shadcn/ui components in `components/ui/` or third-party library internals. Compose them through app-level wrappers instead.
 - Never put secrets in code, commits, or client-side bundles.
 - Never use the service-role Supabase client outside server-only modules.
 - Never confirm a booking or record a payment from client-supplied data.
