@@ -26,7 +26,7 @@ Set up design tokens, fonts, brand wrapper components, and the base layout so ev
 
 ## Notes And Rules
 
-- Do not edit files in `components/ui/` after finish.
+- Never edit files in `components/ui/`; compose generated components through app-level wrappers instead.
 - Remove `/design-check` in spec 28.
 - Keep the paper texture very light so it costs almost nothing to load.
 

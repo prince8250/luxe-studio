@@ -29,7 +29,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Create the Supabase project with public sign-ups disabled, apply `supabase/migrations/20261024220000_initial_schema.sql`, run `supabase/seed.sql`, and verify overlap and anon RLS behavior.
+- Create the Supabase project with public sign-ups disabled, apply `supabase/migrations/20261025160022_initial_schema.sql`, run `supabase/seed.sql`, and verify overlap and anon RLS behavior.
 - Decide whether to run the security upgrade in-place or in a separate Git worktree, then rerun `npm run lint`, `npm run typecheck`, and `npm run build`.
 
 ## Build Order
@@ -117,6 +117,7 @@ Resolve these before the spec that needs them (shown in brackets). Record answer
 
 ## Session Notes
 
+- Applied the current issue corrections: aligned the generated UI component rule, corrected the migration filename, tightened database write types, made browser env references statically analyzable, fixed the migration search path, made offer and gallery seeds idempotent, and removed the scratch issue list.
 - Fixed the mobile navbar menu interaction by ensuring the hamburger trigger and opened navigation sheet have explicit touch handling and stacking order; verified the menu opens at 375px.
 - Supabase project creation and keys are still required; do not guess them. In Supabase Auth, disable public sign-ups before launch.
 - The migration includes a `catalog` public bucket in addition to the `gallery` and `staff` buckets required by the schema spec.

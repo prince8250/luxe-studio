@@ -68,7 +68,7 @@
 - `app/(public)/` public pages, `app/admin/` admin pages, `app/api/` HTTP endpoints only.
 - `lib/` shared infrastructure: Supabase clients, auth helpers, availability, Paystack, SMS adapter, money, time, and phone helpers.
 - `components/` UI composition. Subfolders by area: `components/public`, `components/admin`, `components/booking`.
-- `components/ui/` shadcn/ui generated components. Do not edit.
+- `components/ui/` shadcn/ui generated components. Never edit them; compose them through app-level wrappers.
 - `components/brand/` project-styled wrappers (buttons, panels, headings) that apply the design tokens.
 - `supabase/migrations/` SQL.
 - Name files after the responsibility they contain, not the technology.

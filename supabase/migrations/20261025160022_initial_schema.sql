@@ -166,7 +166,7 @@ create index payments_booking_idx on public.payments(booking_id);
 create or replace function public.generate_booking_identifiers()
 returns trigger
 language plpgsql
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   alphabet constant text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
