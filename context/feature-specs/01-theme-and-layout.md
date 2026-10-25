@@ -18,6 +18,7 @@ Set up design tokens, fonts, brand wrapper components, and the base layout so ev
 - Add a small scroll-reveal helper (Intersection Observer, `opacity` and `transform` only, once per element, disabled under `prefers-reduced-motion`).
 - Create a temporary `/design-check` page showing buttons, headings, paper section, color swatches, and type samples at mobile width, for visual review only.
 - Set `lang`, viewport, and theme-color (`#000000`) metadata.
+- just add UI components. UI components will not be redefined anywhere or hardcoded anywhere. 
 
 ## Out Of Scope
 
@@ -25,7 +26,7 @@ Set up design tokens, fonts, brand wrapper components, and the base layout so ev
 
 ## Notes And Rules
 
-- Do not edit files in `components/ui/`.
+- Do not edit files in `components/ui/` after finish.
 - Remove `/design-check` in spec 28.
 - Keep the paper texture very light so it costs almost nothing to load.
 
