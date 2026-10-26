@@ -65,8 +65,10 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuRendered, setIsMenuRendered] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLElement>(null);
+  const closeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const desktopQuery = window.matchMedia("(min-width: 768px)");
@@ -122,16 +124,26 @@ export function Navbar() {
   }, [pathname]);
 
   useEffect(() => {
-    if (!isMenuOpen) {
+    return () => {
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isMenuRendered) {
       return;
     }
 
     document.body.style.overflow = "hidden";
-    closeButtonRef.current?.focus();
+    if (isMenuOpen) {
+      closeButtonRef.current?.focus();
+    }
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setIsMenuOpen(false);
+        closeMenu();
         return;
       }
 
@@ -163,7 +175,25 @@ export function Navbar() {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isMenuRendered]);
+
+  function openMenu() {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+
+    setIsMenuRendered(true);
+    requestAnimationFrame(() => setIsMenuOpen(true));
+  }
+
+  function closeMenu() {
+    setIsMenuOpen(false);
+    closeTimerRef.current = window.setTimeout(() => {
+      setIsMenuRendered(false);
+      closeTimerRef.current = null;
+    }, 320);
+  }
 
   const displayedActiveSection = pathname === "/" ? activeSection : null;
 
@@ -178,7 +208,7 @@ export function Navbar() {
           aria-label="Open navigation menu"
           aria-expanded={isMenuOpen}
           aria-controls="mobile-navigation"
-          onClick={() => setIsMenuOpen(true)}
+          onClick={openMenu}
         >
           <Menu aria-hidden="true" size={24} strokeWidth={1.5} />
         </button>
@@ -207,15 +237,15 @@ export function Navbar() {
         </Link>
       </nav>
 
-      {isMenuOpen ? (
+      {isMenuRendered ? (
         <div
-          className="site-navbar__overlay"
-          onClick={() => setIsMenuOpen(false)}
+          className={`site-navbar__overlay${isMenuOpen ? " site-navbar__overlay--open" : ""}`}
+          onClick={closeMenu}
         >
           <nav
             ref={menuRef}
             id="mobile-navigation"
-            className="site-navbar__sheet"
+            className={`site-navbar__sheet${isMenuOpen ? " site-navbar__sheet--open" : ""}`}
             aria-label="Mobile navigation"
             onClick={(event) => event.stopPropagation()}
           >
@@ -224,7 +254,7 @@ export function Navbar() {
               type="button"
               className="site-navbar__close"
               aria-label="Close navigation menu"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
             >
               <X aria-hidden="true" size={28} strokeWidth={1.5} />
             </button>
@@ -233,10 +263,10 @@ export function Navbar() {
                 <NavbarLink
                   key={link.id}
                   {...link}
-                  onNavigate={() => setIsMenuOpen(false)}
+                  onNavigate={closeMenu}
                 />
               ))}
-              <Link href="/#contact" onClick={() => setIsMenuOpen(false)}>
+              <Link href="/#contact" onClick={closeMenu}>
                 Call
               </Link>
             </div>

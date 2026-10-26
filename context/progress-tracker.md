@@ -16,13 +16,19 @@ Update this file whenever the current phase, active feature, or implementation s
 - Required dependencies for Supabase, Zod, Lucide, and shadcn-compatible UI were added.
 - `lib/env.ts` validates required env vars and `.env.example` lists the required variable names.
 - Required folders for `lib`, public/admin/booking components, and `supabase/migrations` were created.
-- `01-theme-and-layout.md` is implemented: design tokens, Noto Serif/Open Sans/Oswald fonts, brand wrappers, scroll reveal, metadata, and the temporary `/design-check` page are in place.
+- `01-theme-and-layout.md` is implemented: design tokens, Bebas Neue/Noto Serif/Oswald fonts, brand wrappers, scroll reveal, metadata, and the temporary `/design-check` page are in place.
+- The site's global font is now Bebas Neue; the hero wordmark remains on the restored serif display font.
+- Font change verification: lint and typecheck pass; the build compiles and prerenders, then stops at Next.js's mandatory security upgrade gate.
 - `03-navbar.md` is implemented: responsive fixed navigation, desktop floating bar, mobile menu sheet, active-section observer, reduced-motion scrolling, keyboard focus trap, Escape/backdrop close behavior, and always-visible Book links.
+- The mobile navigation menu now uses an ease-in slide and backdrop fade on entry, plus an ease-out slide and fade on exit.
+- `04-hero.md` is implemented: full-screen responsive hero with the supplied local background, a left-aligned serif wordmark, compact Book/Call/Directions actions, staged reduced-motion-safe entrance animation, desktop social rail, and studio constants in `lib/studio.ts`.
 - `02-database-schema.md` is implemented in code: the initial Supabase migration defines all required tables, enums, booking overlap protection, booking identifiers, RLS policies, and `gallery`, `staff`, and `catalog` storage buckets.
 - Sample catalog data is provided in `supabase/seed.sql`; it is explicitly labeled as sample data.
 - Typed Supabase browser, server, and server-only service-role helpers were added, along with `lib/database.types.ts`.
 
 ## In Progress
+
+- The current hero issue refinement is implemented; lint and typecheck pass. The build compiles and prerenders, then stops at Next.js's mandatory security upgrade gate.
 
 - `02-database-schema.md` cannot be fully verified until the developer creates the Supabase project, supplies local environment keys, applies the migration, and runs the overlap/RLS checks.
 - `00-project-setup.md` remains blocked on the required Next.js security upgrade because the current app version is flagged by the framework itself.
@@ -43,7 +49,7 @@ Specs live in `context/feature-specs/`. Build in order unless the developer says
 
 **Phase 1: Public site**
 - [x] 03 Navbar
-- [ ] 04 Hero
+- [x] 04 Hero
 - [ ] 05 Service categories and services page
 - [ ] 06 Gallery mosaic and page
 - [ ] 07 Offers section
@@ -126,3 +132,5 @@ Resolve these before the spec that needs them (shown in brackets). Record answer
 - The migration uses `btree_gist` and `pgcrypto`; active booking overlap is enforced by a partial exclusion constraint on `[starts_at, ends_at)`.
 - Navbar section targets `#services`, `#gallery`, `#about`, and `#contact` are not present on the temporary home page yet; the links are wired to those real IDs for later public-site sections.
 - The mobile `Call` link currently points to `/#contact` because the studio phone number is still an open question.
+- Hero studio details are placeholders until the owner supplies the real logo, phone, address, map link, hours, social links, WhatsApp number, and photography (open question 1).
+- Hero verification: `npm run lint` and `npm run typecheck` pass. `npm run build` compiles, typechecks, and prerenders routes, then stops on Next.js 16.4.0's known security vulnerability gate; the dev server is stopped by the same gate before browser viewport verification can complete.
