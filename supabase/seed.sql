@@ -7,9 +7,9 @@ on conflict (id) do nothing;
 
 insert into public.service_categories (id, name, tagline, image_path, sort_order)
 values
-  ('00000000-0000-0000-0000-000000000201', 'Hair', 'Signature cuts and styling', 'catalog/hair.jpg', 1),
-  ('00000000-0000-0000-0000-000000000202', 'Braiding', 'Protective styles, finished beautifully', 'catalog/braiding.jpg', 2),
-  ('00000000-0000-0000-0000-000000000203', 'Nails', 'Clean, considered nail care', 'catalog/nails.jpg', 3)
+  ('00000000-0000-0000-0000-000000000201', 'Hair', 'Signature cuts and styling', 'hair.jpg', 1),
+  ('00000000-0000-0000-0000-000000000202', 'Braiding', 'Protective styles, finished beautifully', 'braiding.jpg', 2),
+  ('00000000-0000-0000-0000-000000000203', 'Nails', 'Clean, considered nail care', 'nails.jpg', 3)
 on conflict (id) do nothing;
 
 insert into public.services (id, category_id, name, description, price, duration_minutes, payment_mode, deposit_amount)
@@ -50,8 +50,8 @@ where not exists (
 insert into public.offers (title, description, image_path, starts_on, ends_on)
 select title, description, image_path, starts_on, ends_on
 from (values
-  ('First Visit', '10% off your first studio visit.', 'catalog/first-visit.jpg', current_date, current_date + 90),
-  ('Midweek Reset', 'A considered midweek beauty reset.', 'catalog/midweek-reset.jpg', current_date, current_date + 60)
+  ('First Visit', '10% off your first studio visit.', 'first-visit.jpg', current_date, current_date + 90),
+  ('Midweek Reset', 'A considered midweek beauty reset.', 'midweek-reset.jpg', current_date, current_date + 60)
 ) as v(title, description, image_path, starts_on, ends_on)
 where not exists (
   select 1 from public.offers existing where existing.title = v.title

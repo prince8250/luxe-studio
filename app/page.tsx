@@ -1,7 +1,18 @@
+import { Suspense } from "react";
+
+import { Hero } from "@/components/public/hero";
+import {
+  HomeServices,
+  HomeServicesLoading,
+} from "@/components/public/home-services";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-4xl font-bold tracking-widest">LUXE STUDIO</h1>
-    </div>
+    <main>
+      <Hero />
+      <Suspense fallback={<HomeServicesLoading />}>
+        <HomeServices />
+      </Suspense>
+    </main>
   );
 }
