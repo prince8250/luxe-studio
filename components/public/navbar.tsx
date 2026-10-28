@@ -90,6 +90,7 @@ export function Navbar() {
     function closeMenuOnDesktop() {
       if (desktopQuery.matches) {
         setIsMenuOpen(false);
+        setIsMenuRendered(false);
       }
     }
 

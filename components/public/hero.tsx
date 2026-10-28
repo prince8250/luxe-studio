@@ -51,12 +51,14 @@ export function Hero() {
             <Link href="/book">Book now</Link>
           </BrandButton>
           <div className="hero__secondary-actions">
-            <BrandButton asChild variant="outline" size="sm">
-              <a href={`tel:${studio.phone}`}>
-                <Phone aria-hidden="true" size={16} />
-                Call
-              </a>
-            </BrandButton>
+            {studio.phone && (
+              <BrandButton asChild variant="outline" size="sm">
+                <a href={`tel:${studio.phone}`}>
+                  <Phone aria-hidden="true" size={16} />
+                  Call
+                </a>
+              </BrandButton>
+            )}
             <BrandButton asChild variant="outline" size="sm">
               <a href={studio.mapUrl} target="_blank" rel="noreferrer">
                 <MapPin aria-hidden="true" size={16} />
