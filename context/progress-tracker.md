@@ -22,6 +22,9 @@ Update this file whenever the current phase, active feature, or implementation s
 - `03-navbar.md` is implemented: responsive fixed navigation, desktop floating bar, mobile menu sheet, active-section observer, reduced-motion scrolling, keyboard focus trap, Escape/backdrop close behavior, and always-visible Book links.
 - The mobile navigation menu now uses an ease-in slide and backdrop fade on entry, plus an ease-out slide and fade on exit.
 - `04-hero.md` is implemented: full-screen responsive hero with the supplied local background, a left-aligned serif wordmark, compact Book/Call/Directions actions, staged reduced-motion-safe entrance animation, desktop social rail, and studio constants in `lib/studio.ts`.
+- `05-services-section.md` is implemented: active catalog data is fetched server-side, the home page has responsive full-bleed service panels, and `/services` has category sections with service cards, GHS pricing, deposit details, and booking links.
+- The public catalog read path uses a server-only Supabase anon client and Suspense boundaries so Next.js 16 cache components can stream loading states without exposing credentials.
+- Catalog storage paths are normalized relative to the `catalog` bucket, so legacy `catalog/<filename>` database values no longer produce duplicated `catalog/catalog/<filename>` URLs.
 - `02-database-schema.md` is implemented in code: the initial Supabase migration defines all required tables, enums, booking overlap protection, booking identifiers, RLS policies, and `gallery`, `staff`, and `catalog` storage buckets.
 - Sample catalog data is provided in `supabase/seed.sql`; it is explicitly labeled as sample data.
 - Typed Supabase browser, server, and server-only service-role helpers were added, along with `lib/database.types.ts`.
@@ -32,6 +35,12 @@ Update this file whenever the current phase, active feature, or implementation s
 
 - `02-database-schema.md` cannot be fully verified until the developer creates the Supabase project, supplies local environment keys, applies the migration, and runs the overlap/RLS checks.
 - `00-project-setup.md` remains blocked on the required Next.js security upgrade because the current app version is flagged by the framework itself.
+- `05-services-section.md` is implemented and lint/typecheck pass. Production build compilation, prerendering, and route generation pass; the final build command still stops at the existing Next.js security vulnerability gate. Browser verification against live catalog data remains dependent on the Supabase project and seeded storage images.
+- Fixed the catalog image URL issue by normalizing bucket-relative paths and corrected the seed file to store paths relative to the `catalog` bucket. Added the configured Next image quality values required by the image optimizer.
+- Fixed the services panel CTA contrast with an explicit light text utility and increased the staggered second panel height so it does not appear shortened in the desktop layout.
+- Added a Home link to the desktop and mobile navigation so visitors can return to the homepage from any route.
+- Fixed navbar active-state updates for homepage hashes and the `/services` route, and standardized home service-panel image heights so the Braiding panel matches the other categories.
+- Resolved the current UI issues: navbar section selection now moves the active underline between categories, and all home service panels use consistent image dimensions.
 
 ## Next Up
 
@@ -50,7 +59,7 @@ Specs live in `context/feature-specs/`. Build in order unless the developer says
 **Phase 1: Public site**
 - [x] 03 Navbar
 - [x] 04 Hero
-- [ ] 05 Service categories and services page
+- [x] 05 Service categories and services page (implementation complete; hosted Supabase and final browser verification pending)
 - [ ] 06 Gallery mosaic and page
 - [ ] 07 Offers section
 - [ ] 08 About, location, contact, and footer
@@ -134,3 +143,4 @@ Resolve these before the spec that needs them (shown in brackets). Record answer
 - The mobile `Call` link currently points to `/#contact` because the studio phone number is still an open question.
 - Hero studio details are placeholders until the owner supplies the real logo, phone, address, map link, hours, social links, WhatsApp number, and photography (open question 1).
 - Hero verification: `npm run lint` and `npm run typecheck` pass. `npm run build` compiles, typechecks, and prerenders routes, then stops on Next.js 16.4.0's known security vulnerability gate; the dev server is stopped by the same gate before browser viewport verification can complete.
+- Services verification: `npm run lint` and `npm run typecheck` pass. `npm run build` compiles, typechecks, prerenders, and generates `/` and `/services` with partial prerendering and server-streamed catalog content, then stops on Next.js 16.4.0's known security vulnerability gate. The 375px and desktop browser check could not be completed against real catalog data because hosted Supabase setup and seeded storage images are still pending.

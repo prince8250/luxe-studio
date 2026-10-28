@@ -1,0 +1,56 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Validate current issues fix",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"lint"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$eslint - stylish"
+			]
+		},
+		{
+			"label": "Typecheck current issues fix",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"typecheck"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"label": "Build current issues fix",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"label": "Run Next feedback reporting pass",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"node_modules/next/dist/bin/next",
+				"internal",
+				"agent-feedback-instructions"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}

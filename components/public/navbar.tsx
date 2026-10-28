@@ -15,13 +15,22 @@ const sectionLinks = [
 
 const sectionIds = sectionLinks.map((link) => link.id);
 
+function HomeLink({ onNavigate }: { onNavigate?: () => void }) {
+  return (
+    <Link href="/" onClick={onNavigate}>
+      Home
+    </Link>
+  );
+}
+
 interface NavbarLinkProps {
   id: (typeof sectionLinks)[number]["id"];
   label: string;
   onNavigate?: () => void;
+  onSelect?: (id: NavbarLinkProps["id"]) => void;
 }
 
-function NavbarLink({ id, label, onNavigate }: NavbarLinkProps) {
+function NavbarLink({ id, label, onNavigate, onSelect }: NavbarLinkProps) {
   const href = `/#${id}`;
 
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
@@ -39,6 +48,7 @@ function NavbarLink({ id, label, onNavigate }: NavbarLinkProps) {
 
     if (window.location.pathname === "/" && target) {
       event.preventDefault();
+      onSelect?.(id);
       const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
@@ -48,6 +58,10 @@ function NavbarLink({ id, label, onNavigate }: NavbarLinkProps) {
         block: "start",
       });
       window.history.replaceState(null, "", href);
+    }
+
+    if (window.location.pathname !== "/") {
+      onSelect?.(id);
     }
 
     onNavigate?.();
@@ -94,6 +108,18 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
+    function updateActiveSection() {
+      if (pathname === "/services") {
+        setActiveSection("services");
+      } else if (pathname === "/") {
+        setActiveSection(window.location.hash.slice(1) || null);
+      } else {
+        setActiveSection(null);
+      }
+    }
+
+    updateActiveSection();
+
     if (pathname !== "/") {
       return;
     }
@@ -120,7 +146,12 @@ export function Navbar() {
     );
 
     sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+
+    window.addEventListener("hashchange", updateActiveSection);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("hashchange", updateActiveSection);
+    };
   }, [pathname]);
 
   useEffect(() => {
@@ -196,6 +227,10 @@ export function Navbar() {
   }
 
   const displayedActiveSection = pathname === "/" ? activeSection : null;
+  const activeNavigationSection =
+    pathname === "/services"
+      ? activeSection ?? "services"
+      : displayedActiveSection;
 
   return (
     <header
@@ -219,16 +254,28 @@ export function Navbar() {
 
       <nav className="site-navbar__desktop" aria-label="Primary navigation">
         <div className="site-navbar__links">
+          <span
+            className={
+              pathname === "/" && activeSection === null
+                ? "site-navbar__link site-navbar__link--active"
+                : "site-navbar__link"
+            }
+          >
+            <HomeLink />
+          </span>
           {sectionLinks.map((link) => (
             <span
               className={
-                displayedActiveSection === link.id
+                activeNavigationSection === link.id
                   ? "site-navbar__link site-navbar__link--active"
                   : "site-navbar__link"
               }
               key={link.id}
             >
-              <NavbarLink {...link} />
+              <NavbarLink
+                {...link}
+                onSelect={setActiveSection}
+              />
             </span>
           ))}
         </div>
@@ -259,10 +306,12 @@ export function Navbar() {
               <X aria-hidden="true" size={28} strokeWidth={1.5} />
             </button>
             <div className="site-navbar__sheet-links">
+              <HomeLink onNavigate={closeMenu} />
               {sectionLinks.map((link) => (
                 <NavbarLink
                   key={link.id}
                   {...link}
+                  onSelect={setActiveSection}
                   onNavigate={closeMenu}
                 />
               ))}
